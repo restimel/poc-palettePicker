@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Test for input palette Color</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .btn-palette {
+            cursor: pointer;
+        }
+        .active {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <p>some inputs (without any listeners)</p>
+    <label> (basic) color1:
+        <input type="paletteColor">
+    </label>
+    <label for="color2">(separated label) color2</label>
+    <input type="paletteColor" id="color2">
+
+    <label> (input type="color") color3:
+        <input type="color" data-type="paletteColor" data-title="coucou" title="the color nb 3">
+    </label>
+
+    <hr>
+    <p>Listen on events (input and change)</p>
+    <label>Color: 
+        <input type="color" data-type="paletteColor" id="color" value="#000000">
+    </label>
+    <label>BgColor:
+        <input type="color" data-type="paletteColor" id="bgcolor" value="#ffffff">
+    </label>
+    <p id="text">Some text<br>with some words!</p>
+
+    <hr>
+    <p>These inputs are added in JS and not in HTML. Only their group elements are parsed.</p>
+    <label id="js1">not parsed</label>
+    <label id="js2">same as previous but parsed</label>
+    <label id="js3">Change parse type</label>
+
+    <!-- load the script -->
+    <script src="palettePicker.js"></script>
+
+    <script>
+        // configure
+        palettePicker.configuration({
+            colors: ['#cc0066', '#cc6600', '#cc6666', '#0000ff', '#cc66ff', '#cccccc', '#000000', '#ffffff', 'green', 'hsl(123, 50%, 70%)'],
+            btnClass: 'btn-palette',
+            defaultColor: '#cccccc',
+        });
+        palettePicker();
+
+        var text = document.getElementById('text');
+        document.getElementById('color').oninput = function() {
+            text.style.color = this.value;
+        }
+        document.getElementById('bgcolor').onchange = function () {
+            text.style.backgroundColor = this.value;
+        }
+
+        // Dynamic adds
+        var el1 = document.getElementById('js1');
+        var input1 = document.createElement('input');
+        input1.type = 'paletteColor';
+        input1.value = '#cc6600';
+        el1.appendChild(input1);
+        // palettePicker(el1);
+
+        var el2 = document.getElementById('js2');
+        var input2 = document.createElement('input');
+        input2.type = 'paletteColor';
+        input2.value = '#cc6600';
+        el2.appendChild(input2);
+        palettePicker(el2);
+
+        var el3 = document.getElementById('js3');
+        var input3 = document.createElement('input');
+        input3.type = 'color';
+        input3.value = '#cc6600';
+        el3.appendChild(input3);
+        palettePicker.configuration({
+            type: 'color'
+        });
+        palettePicker(el3);
+    </script>
+</body>
+</html>
